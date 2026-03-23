@@ -1,73 +1,259 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>AI Career Advisor</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Career Advisor</title>
 
-    <style>
-        body {
-            font-family: Arial;
-            background: #0f172a;
-            color: white;
-            text-align: center;
-        }
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-        textarea, input {
-            width: 60%;
-            padding: 10px;
-            margin: 10px;
-        }
+<style>
+:root {
+    --primary: #4f46e5;
+    --primary-light: #eef2ff;
+    --text: #111827;
+    --muted: #6b7280;
+    --border: #e5e7eb;
+    --bg: #f9fafb;
+}
 
-        button {
-            padding: 10px 20px;
-            background: #22c55e;
-            border: none;
-            color: white;
-            cursor: pointer;
-        }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-        .card {
-            background: #1e293b;
-            margin: 20px;
-            padding: 20px;
-            border-radius: 10px;
-        }
-    </style>
+body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+}
+
+/* NAVBAR */
+.navbar {
+    background: white;
+    border-bottom: 1px solid var(--border);
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar h1 {
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+.navbar span {
+    color: var(--primary);
+}
+
+/* CONTAINER */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px 20px;
+}
+
+/* GRID */
+.dashboard {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+/* CARD */
+.card {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    border: 1px solid var(--border);
+    transition: all 0.2s ease;
+}
+
+.card:hover {
+    border-color: #d1d5db;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+}
+
+.card h2 {
+    font-size: 1.25rem;
+    margin-bottom: 16px;
+}
+
+/* INPUTS */
+textarea, input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+}
+
+textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+textarea:focus, input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(79,70,229,0.1);
+}
+
+/* BUTTON */
+button {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button:hover {
+    background: #4338ca;
+}
+
+/* OUTPUT BOX */
+.output-box {
+    background: var(--primary-light);
+    border-radius: 10px;
+    padding: 16px;
+    margin-top: 12px;
+    font-size: 0.9rem;
+}
+
+/* TAGS */
+.tag {
+    display: inline-block;
+    background: #eef2ff;
+    color: var(--primary);
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    margin: 4px;
+}
+
+/* SECTION TITLES */
+.section-title {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-top: 16px;
+}
+
+/* EMPTY STATE */
+.empty {
+    color: var(--muted);
+    font-size: 0.85rem;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+    .dashboard {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
 </head>
 
 <body>
 
-<h1>🚀 AI Career Advisor Dashboard</h1>
-
-<div class="card">
-    <h2>💬 Ask Career Questions</h2>
-    <textarea id="input" rows="5" placeholder="Ask me anything about your career..."></textarea><br>
-    <button onclick="send()">Ask AI</button>
-    <pre id="output" style="text-align: left;"></pre>
+<!-- NAVBAR -->
+<div class="navbar">
+    <h1>🚀 <span>AI Career Advisor</span></h1>
+    <p style="color:#6b7280;font-size:0.9rem;">Smart career insights</p>
 </div>
 
-<div class="card">
-    <h2>📄 Resume Analyzer</h2>
-    <textarea id="resume" rows="5" placeholder="Paste your resume"></textarea><br>
-    <input id="role" placeholder="Target Role (e.g., Senior Developer)"><br>
-    <button onclick="analyzeResume()">Analyze Resume</button>
+<div class="container">
+
+    <div class="dashboard">
+
+        <!-- AI CHAT -->
+        <div class="card">
+            <h2>💬 Career Assistant</h2>
+
+            <textarea id="input" placeholder="Ask anything about your career..."></textarea>
+            <button onclick="send()">Get Insights</button>
+
+            <div id="output" class="output-box empty">
+                No questions asked yet.
+            </div>
+        </div>
+
+        <!-- RESUME ANALYZER -->
+        <div class="card">
+            <h2>📄 Resume Analyzer</h2>
+
+            <input type="file" id="resumeFile" accept=".txt">
+            <input type="text" id="role" placeholder="Target Role (e.g. Frontend Developer)">
+            <button onclick="analyzeResume()">Analyze & Improve</button>
+
+            <div class="section-title">Your Skills</div>
+            <div id="skills" class="output-box empty">
+                Upload resume to see extracted skills
+            </div>
+
+            <div class="section-title">Missing Skills</div>
+            <div id="missing" class="output-box empty">
+                Skill gaps will appear here
+            </div>
+
+            <div class="section-title">Recommendations</div>
+            <div id="recommendations" class="output-box empty">
+                AI suggestions will appear here
+            </div>
+
+        </div>
+
+    </div>
 </div>
 
-<div class="card">
-    <h3>✅ Your Skills</h3>
-    <p id="skills" style="min-height: 30px;"></p>
-</div>
+<script>
+function send() {
+    const input = document.getElementById("input").value;
+    const output = document.getElementById("output");
 
-<div class="card">
-    <h3>❌ Missing Skills</h3>
-    <p id="missing" style="min-height: 30px;"></p>
-</div>
+    output.classList.remove("empty");
+    output.innerHTML = "Analyzing...";
 
-<div class="card">
-    <h3>💡 Recommendations</h3>
-    <p id="recommendations" style="min-height: 30px;"></p>
-</div>
+    // Simulated response (replace with backend API)
+    setTimeout(() => {
+        output.innerHTML = "Here are some insights based on your query:\\n\\n- Focus on building real-world projects\\n- Strengthen DSA + system design\\n- Apply to internships consistently";
+    }, 1000);
+}
 
-<script src="script.js"></script>
+function analyzeResume() {
+    const skills = document.getElementById("skills");
+    const missing = document.getElementById("missing");
+    const rec = document.getElementById("recommendations");
+
+    skills.classList.remove("empty");
+    missing.classList.remove("empty");
+    rec.classList.remove("empty");
+
+    // Simulated output (replace with real parsing)
+    skills.innerHTML = `
+        <span class="tag">HTML</span>
+        <span class="tag">CSS</span>
+        <span class="tag">JavaScript</span>
+    `;
+
+    missing.innerHTML = `
+        <span class="tag">React</span>
+        <span class="tag">System Design</span>
+    `;
+
+    rec.innerHTML = `
+        - Build 2 React projects<br>
+        - Learn APIs & backend basics<br>
+        - Practice LeetCode daily
+    `;
+}
+</script>
 
 </body>
 </html>

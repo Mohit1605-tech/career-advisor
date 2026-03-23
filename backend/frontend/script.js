@@ -1,7 +1,7 @@
 async function send() {
     const input = document.getElementById("input").value;
     const outputEl = document.getElementById("output");
-    const button = document.querySelector("button");
+    const button = document.querySelector(".card:nth-child(1) button");
 
     if (!input.trim()) {
         outputEl.innerText = "Please enter a prompt!";
@@ -9,10 +9,10 @@ async function send() {
     }
 
     button.disabled = true;
-    outputEl.innerText = "Loading...";
+    button.innerHTML = '<span class="loading"></span>Loading...';
 
     try {
-        const res = await fetch("https://career-advisor-api.onrender.com/ask", ... {
+        const res = await fetch("http://127.0.0.1:5000/ask", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -30,17 +30,30 @@ async function send() {
         outputEl.innerText = `Error: ${error.message}`;
     } finally {
         button.disabled = false;
+        button.innerText = "Ask AI";
     }
 }
 
 async function analyzeResume() {
-    const resume = document.getElementById("resume").value;
+    const resumeFile = document.getElementById("resumeFile").files[0];
     const role = document.getElementById("role").value;
+    const button = document.querySelector(".card:nth-child(2) button");
 
-    if (!resume.trim() || !role.trim()) {
-        alert("Please fill in both resume and role");
+    if (!resumeFile) {
+        alert("Please select a resume file");
         return;
     }
+
+    if (!role.trim()) {
+        alert("Please fill in the target role");
+        return;
+    }
+
+    // Read the file content
+    const resume = await resumeFile.text();
+
+    button.disabled = true;
+    button.innerHTML = '<span class="loading"></span>Analyzing...';
 
     try {
         const res = await fetch("http://127.0.0.1:5000/analyze_resume", {
@@ -62,16 +75,16 @@ async function analyzeResume() {
         const missingEl = document.getElementById("missing");
         const recsEl = document.getElementById("recommendations");
 
-        skillsEl.innerText = (data.skills && data.skills.length > 0) 
-            ? data.skills.join(", ") 
+        skillsEl.innerText = (data.skills && data.skills.length > 0)
+            ? data.skills.join(", ")
             : "No skills identified";
 
-        missingEl.innerText = (data.missing_skills && data.missing_skills.length > 0) 
-            ? data.missing_skills.join(", ") 
+        missingEl.innerText = (data.missing_skills && data.missing_skills.length > 0)
+            ? data.missing_skills.join(", ")
             : "No missing skills identified";
 
-        recsEl.innerText = (data.recommendations && data.recommendations.length > 0) 
-            ? data.recommendations.join("\n") 
+        recsEl.innerText = (data.recommendations && data.recommendations.length > 0)
+            ? data.recommendations.join("\n")
             : "No recommendations available";
 
     } catch (error) {
@@ -79,5 +92,8 @@ async function analyzeResume() {
         document.getElementById("skills").innerText = "Error loading analysis";
         document.getElementById("missing").innerText = "Error loading analysis";
         document.getElementById("recommendations").innerText = "Error loading analysis";
+    } finally {
+        button.disabled = false;
+        button.innerText = "Analyze Resume";
     }
 }
