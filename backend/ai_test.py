@@ -1,7 +1,7 @@
 import os
 from google import genai
 
-client = genai.Client(api_key="AIzaSyAlef1aoirtHst-3D4AkkQFg5kycL99S3w")
+client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY"))
 
 def ask_ai(prompt):
     try:
