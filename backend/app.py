@@ -1,16 +1,20 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from ai_test import ask_ai
 from recommender import recommend
 from resume_analyzer import analyze_resume
 from skill_analyzer import analyze_skills
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='frontend', static_url_path='')
 CORS(app)
 
 @app.route("/")
 def home():
-    return "AI Career Advisor Backend Running 🚀"
+    return send_from_directory('frontend', 'index.html')
+
+@app.route("/<path:path>")
+def serve_static(path):
+    return send_from_directory('frontend', path)
 
 @app.route("/test")
 def test():

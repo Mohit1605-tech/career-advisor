@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: career-advisor
+    env: python
+    plan: free
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: gunicorn app:app --chdir backend --bind 0.0.0.0:$PORT
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false  # Set this in Render dashboard as secret

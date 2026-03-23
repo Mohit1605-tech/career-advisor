@@ -12,7 +12,7 @@ async function send() {
     button.innerHTML = '<span class="loading"></span>Loading...';
 
     try {
-        const res = await fetch("http://127.0.0.1:5000/ask", {
+        const res = await fetch("/ask", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -56,7 +56,7 @@ async function analyzeResume() {
     button.innerHTML = '<span class="loading"></span>Analyzing...';
 
     try {
-        const res = await fetch("http://127.0.0.1:5000/analyze_resume", {
+        const res = await fetch("/analyze_resume", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
