@@ -9,12 +9,16 @@ def analyze_skills(ai_output):
     for line in lines:
         line = line.strip()
 
+        if "Missing Skills:" in line:
+            mode = "missing"
+            continue
+
         if "Skills:" in line:
             mode = "skills"
             continue
-
-        if "Missing Skills:" in line:
-            mode = "missing"
+            
+        if "Suggestions:" in line or "Resume Score:" in line:
+            mode = None
             continue
 
         if line.startswith("-"):
