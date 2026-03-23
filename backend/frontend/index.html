@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Career Advisor</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #0f172a;
+            color: white;
+            text-align: center;
+        }
+
+        textarea, input {
+            width: 60%;
+            padding: 10px;
+            margin: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: #22c55e;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+
+        .card {
+            background: #1e293b;
+            margin: 20px;
+            padding: 20px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>🚀 AI Career Advisor Dashboard</h1>
+
+<div class="card">
+    <h2>💬 Ask Career Questions</h2>
+    <textarea id="input" rows="5" placeholder="Ask me anything about your career..."></textarea><br>
+    <button onclick="send()">Ask AI</button>
+    <pre id="output" style="text-align: left;"></pre>
+</div>
+
+<div class="card">
+    <h2>📄 Resume Analyzer</h2>
+    <textarea id="resume" rows="5" placeholder="Paste your resume"></textarea><br>
+    <input id="role" placeholder="Target Role (e.g., Senior Developer)"><br>
+    <button onclick="analyzeResume()">Analyze Resume</button>
+</div>
+
+<div class="card">
+    <h3>✅ Your Skills</h3>
+    <p id="skills" style="min-height: 30px;"></p>
+</div>
+
+<div class="card">
+    <h3>❌ Missing Skills</h3>
+    <p id="missing" style="min-height: 30px;"></p>
+</div>
+
+<div class="card">
+    <h3>💡 Recommendations</h3>
+    <p id="recommendations" style="min-height: 30px;"></p>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
