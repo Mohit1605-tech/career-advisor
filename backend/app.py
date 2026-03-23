@@ -8,14 +8,6 @@ from skill_analyzer import analyze_skills
 app = Flask(__name__, static_folder='frontend', static_url_path='')
 CORS(app)
 
-@app.route("/")
-def home():
-    return send_from_directory('frontend', 'index.html')
-
-@app.route("/<path:path>")
-def serve_static(path):
-    return send_from_directory('frontend', path)
-
 @app.route("/test")
 def test():
     return jsonify({"message": "API working successfully"})
@@ -23,16 +15,24 @@ def test():
 # ✅ THIS IS THE IMPORTANT PART
 @app.route("/ask", methods=["POST"])
 def ask():
-    data = request.json
+    try:
+        data = request.json
 
-    prompt = data.get("prompt")
+        prompt = data.get("prompt")
 
-    if not prompt:
-        return jsonify({"error": "No prompt provided"})
+        if not prompt:
+            return jsonify({"error": "No prompt provided"})
 
-    response = ask_ai(prompt)
+        print(f"DEBUG: Calling ask_ai with prompt: {prompt}")
+        response = ask_ai(prompt)
+        print(f"DEBUG: Response from ask_ai: {response}")
 
-    return jsonify({"response": response})
+        return jsonify({"response": response})
+    except Exception as e:
+        print(f"DEBUG: ERROR in /ask: {type(e).__name__}: {e}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({"error": f"{type(e).__name__}: {str(e)}", "traceback": traceback.format_exc()})
 
 @app.route("/analyze_resume", methods=["POST"])
 def analyze():
@@ -60,6 +60,14 @@ def analyze():
         "missing_skills": skill_data["missing"],
         "recommendations": recommendations
     })
+
+@app.route("/")
+def home():
+    return send_from_directory('frontend', 'index.html')
+
+@app.route("/<path:path>")
+def serve_static(path):
+    return send_from_directory('frontend', path)
 
 if __name__ == "__main__":
     import os

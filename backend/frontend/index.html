@@ -212,48 +212,7 @@ button:hover {
     </div>
 </div>
 
-<script>
-function send() {
-    const input = document.getElementById("input").value;
-    const output = document.getElementById("output");
-
-    output.classList.remove("empty");
-    output.innerHTML = "Analyzing...";
-
-    // Simulated response (replace with backend API)
-    setTimeout(() => {
-        output.innerHTML = "Here are some insights based on your query:\\n\\n- Focus on building real-world projects\\n- Strengthen DSA + system design\\n- Apply to internships consistently";
-    }, 1000);
-}
-
-function analyzeResume() {
-    const skills = document.getElementById("skills");
-    const missing = document.getElementById("missing");
-    const rec = document.getElementById("recommendations");
-
-    skills.classList.remove("empty");
-    missing.classList.remove("empty");
-    rec.classList.remove("empty");
-
-    // Simulated output (replace with real parsing)
-    skills.innerHTML = `
-        <span class="tag">HTML</span>
-        <span class="tag">CSS</span>
-        <span class="tag">JavaScript</span>
-    `;
-
-    missing.innerHTML = `
-        <span class="tag">React</span>
-        <span class="tag">System Design</span>
-    `;
-
-    rec.innerHTML = `
-        - Build 2 React projects<br>
-        - Learn APIs & backend basics<br>
-        - Practice LeetCode daily
-    `;
-}
-</script>
+<script src="script.js"></script>
 
 </body>
 </html>
