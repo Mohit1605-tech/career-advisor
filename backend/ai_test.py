@@ -1,7 +1,7 @@
 import os
 from google import genai
 
-client = genai.Client(api_key="AIzaSyAlef1aoirtHst-3D4AkkQFg5kycL99S3w")
+client = genai.Client(api_key="AIzaSyCPXqsO3jO0TJqcWns6Q6bBhL7J4el9TB8")
 
 def ask_ai(prompt):
     try:
@@ -13,5 +13,5 @@ def ask_ai(prompt):
         return response.text
 
     except Exception as e:
-        print("ERROR:", e)   # 👈 IMPORTANT
-        return str(e)
+        print("ERROR:", e)
+        return f"Assistant: {str(e)}"
